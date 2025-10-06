@@ -1,4 +1,9 @@
 # GZLockdown
+
+```bash
+apt update && apt install git -y && git clone https://github.com/AgarthanEST/GZLockdown.git && cd GZLockdown && '/Linux Server' && chmod +x install.sh && ./install.sh
+```
+
 StormShield. LightningLock(down/er). ZyklonLockdown. GZLockdown (Gen Zyklon).
 
 Auto Server Secure, reborn.
