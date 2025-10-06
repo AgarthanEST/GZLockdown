@@ -6,7 +6,16 @@
 
 ## Customisation Variables
 clear
-read -p "New Username: " desired_user
+
+while true; do
+  read -p "New Username: " desired_user
+  if [[ -n "$desired_user" ]]; then
+    break
+  else
+    echo "Username cannot be empty. Please try again."
+  fi
+done
+
 
 while true; do
   read -s -p "Enter password: " Password
