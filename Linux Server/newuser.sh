@@ -29,9 +29,7 @@ sudo systemctl restart ssh
 sudo ufw --force enable
 sudo ufw status
 
-## Security
-sudo apt-get autoremove # RM Useless Packages (Verify it runs, and doesn't just install. Then uninstall post run)
-sudo rm /etc/sudoers.d/$USER # RM Passwordless Sudo Entry
+## Optional Features
 
 echo
 echo "CONTEXT: An SSH Keypair allows passwordless login via generating a keyfile for authentication" 
@@ -40,6 +38,11 @@ yes_or_no "Are you interested in creating an SSH Keypair?" && echo "TEST SUCCESS
 
 # NOTE: Install other tools optionally here.
 
+## Security
+sudo apt-get autoremove -y # RM Useless Packages (Verify it runs, and doesn't just install. Then uninstall post run)
+sudo rm /etc/sudoers.d/$USER # RM Passwordless Sudo Entry
+(sleep 15 && sudo reboot) &
+
 ## Provide Login Details
 myIP=$(curl -s ipinfo.io/ip)
 echo
@@ -47,12 +50,13 @@ echo "----------------------------"
 echo "ssh $USER@$myIP -p $desired_port"
 echo "----------------------------"
 echo
+echo "Rebooting in 15 seconds..."
 
-echo
-echo "*****************************"
-echo "Enter: sudo reboot now"
-echo "*****************************"
-echo
+#echo
+#echo "*****************************"
+#echo "Enter: sudo reboot now"
+#echo "*****************************"
+#echo
 
 # NOTE: DDOS Protection will be needed. Look for tools. Protect externally with cloudflare. Get SSL cert etc.
 # NOTE: This can be integrated into Auto Matrix setup. WIth custom site name, gets the SSL cert for you. ALL AUTOMATED.
