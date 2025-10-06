@@ -53,7 +53,7 @@ cp cleanup.sh /home/$desired_user/
 chown $desired_user:$desired_user /home/$desired_user/cleanup.sh
 
 ## Create Non-Root Sudo User
-adduser --disabled-password --gecos ",,," "$desired_user"
+adduser --disabled-password --gecos "" "$desired_user"
 echo "$desired_user:$Password" | chpasswd
 
 #adduser $desired_user
