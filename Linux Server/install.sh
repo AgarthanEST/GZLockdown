@@ -22,14 +22,12 @@ EOF
 echo "unattended-upgrades unattended-upgrades/enable_auto_updates boolean true" | debconf-set-selections
 DEBIAN_FRONTEND=noninteractive dpkg-reconfigure -f noninteractive unattended-upgrades
 
-## Create Non-Root Sudo User
-
+## Prepare cleanup.sh
 cp cleanup.sh /home/$desired_user/
 chown $desired_user:$desired_user /home/$desired_user/cleanup.sh
 
+## Create Non-Root Sudo User
 read -p "New Username: " desired_user && adduser $desired_user && usermod -aG sudo $desired_user && \
 echo "$desired_user ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$desired_user && \
 cp newuser.sh /home/$desired_user/ && chown $desired_user:$desired_user /home/$desired_user/newuser.sh && \
 su - $desired_user -c "bash ~/newuser.sh"
-
-# NOTE: Auto clean at the end! Ensure that the script is in ~/
