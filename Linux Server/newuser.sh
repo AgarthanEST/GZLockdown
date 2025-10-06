@@ -41,7 +41,7 @@ yes_or_no "Are you interested in creating an SSH Keypair?" && echo "TEST SUCCESS
 ## Security
 sudo apt-get autoremove -y # RM Useless Packages (Verify it runs, and doesn't just install. Then uninstall post run)
 sudo rm /etc/sudoers.d/$USER # RM Passwordless Sudo Entry
-(sleep 15 && sudo reboot) &
+(sleep 10 && /sbin/reboot) &
 
 ## Provide Login Details
 myIP=$(curl -s ipinfo.io/ip)
@@ -50,13 +50,7 @@ echo "----------------------------"
 echo "ssh $USER@$myIP -p $desired_port"
 echo "----------------------------"
 echo
-echo "Rebooting in 15 seconds..."
-
-#echo
-#echo "*****************************"
-#echo "Enter: sudo reboot now"
-#echo "*****************************"
-#echo
+echo "Rebooting in 10 seconds..."
 
 # NOTE: DDOS Protection will be needed. Look for tools. Protect externally with cloudflare. Get SSL cert etc.
 # NOTE: This can be integrated into Auto Matrix setup. WIth custom site name, gets the SSL cert for you. ALL AUTOMATED.
