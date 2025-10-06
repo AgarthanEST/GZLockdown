@@ -5,12 +5,22 @@
 # Do a Y/N on if this is a fresh server on root?
 
 ## Unattended Security Updates
+set -e
+export DEBIAN_FRONTEND=noninteractive
 
-apt-get update && apt-get upgrade -y && apt install unattended-upgrades -y && \
-sed -i 's/APT::Periodic::Unattended-Upgrade "0";/APT::Periodic::Unattended-Upgrade "1";/g' /etc/apt/apt.conf.d/20auto-upgrades && \
-clear
+apt-get update
+apt-get upgrade -y
+apt-get install -y unattended-upgrades
 
-# ^^ Verify the above actually makes UA update. Perhaps reboot is required.
+cat > /etc/apt/apt.conf.d/20auto-upgrades <<'EOF'
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Download-Upgradeable-Packages "1";
+APT::Periodic::Unattended-Upgrade "1";
+APT::Periodic::AutocleanInterval "7";
+EOF
+
+echo "unattended-upgrades unattended-upgrades/enable_auto_updates boolean true" | debconf-set-selections
+DEBIAN_FRONTEND=noninteractive dpkg-reconfigure -f noninteractive unattended-upgrades
 
 ## Create Non-Root Sudo User
 
