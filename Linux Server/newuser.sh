@@ -1,7 +1,6 @@
 #!/bin/bash
 
 ## Functions
-
 function yes_or_no {
     while true; do
         read -p "$* [y/n]: " yn
@@ -13,13 +12,11 @@ function yes_or_no {
 }
 
 ## Setup
-
 cd ~
 mkdir ~/.ssh
 chmod 700 ~/.ssh
 
 ## Customisation
-
 echo "***********************"
 read -p "Select Custom SSH Port: " desired_port
 
@@ -29,12 +26,11 @@ sudo sed -i "s/#Port 22\b/Port $desired_port/gI" /etc/ssh/sshd_config # Unique S
 sudo apt install ufw -y
 sudo ufw limit $desired_port/tcp comment 'Rate limit on SSH attempts' # Firewall & SSH Protection
 sudo systemctl restart ssh
-sudo ufw enable
+sudo ufw --force enable
 sudo ufw status
 
 ## Security
-
-sudo apt-get autoremove # RM Useless Packages (Verify it runs, and doesn't just instal. Then uninstall post run)
+sudo apt-get autoremove # RM Useless Packages (Verify it runs, and doesn't just install. Then uninstall post run)
 sudo rm /etc/sudoers.d/$USER # RM Passwordless Sudo Entry
 
 echo
@@ -45,7 +41,6 @@ yes_or_no "Are you interested in creating an SSH Keypair?" && echo "TEST SUCCESS
 # NOTE: Install other tools optionally here.
 
 ## Provide Login Details
-
 myIP=$(curl -s ipinfo.io/ip)
 echo
 echo "----------------------------"
