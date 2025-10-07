@@ -12,8 +12,10 @@ function yes_or_no {
 }
 
 ## Customisations
-clear
+echo
+echo "*************************"
 echo "CUSTOMISATIONS"
+echo "*************************"
 echo
 
 echo "CONTEXT: An SSH Keypair allows passwordless login via generating a keyfile for authentication" 
