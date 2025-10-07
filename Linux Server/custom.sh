@@ -43,7 +43,7 @@ if [ "$enable2fa" = true ]; then
   
   sudo bash -c "grep -q '^ChallengeResponseAuthentication' /etc/ssh/sshd_config || echo 'ChallengeResponseAuthentication yes' >> /etc/ssh/sshd_config"
   sudo bash -c "grep -q '^UsePAM' /etc/ssh/sshd_config || echo 'UsePAM yes' >> /etc/ssh/sshd_config"
-  sudo bash -c "grep -q 'pam_google_authenticator.so' /etc/pam.d/sshd || echo 'auth required pam_google_authenticator.so' >> /etc/pam.d/sshd"
+  sudo bash -c "grep -q 'pam_google_authenticator.so' /etc/pam.d/sshd || sed -i '1i auth required pam_google_authenticator.so' /etc/pam.d/sshd"
 
   if sshd -t; then
     systemctl restart ssh
