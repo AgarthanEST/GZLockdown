@@ -47,12 +47,13 @@ if [ "$enable2fa" = true ]; then
 
   PAM_FILE="/etc/pam.d/sshd"
   if ! grep -q "pam_oath.so" "$PAM_FILE"; then
-    auth required pam_oath.so usersfile=/etc/security/users.oath window=30 digits=6 user=totpuser
+    echo "auth required pam_oath.so usersfile=$OATH_FILE window=30 digits=6 user=totpuser" >> "$PAM_FILE"
   fi
   
   SSHD_CONFIG="/etc/ssh/sshd_config"
-  sed -i 's/^#*ChallengeResponseAuthentication.*/ChallengeResponseAuthentication yes/' "$SSHD_CONFIG"
-  sed -i 's/^#*UsePAM.*/UsePAM yes/' "$SSHD_CONFIG"
+  grep -q "^ChallengeResponseAuthentication yes" "$SSHD_CONFIG" || echo "ChallengeResponseAuthentication yes" >> "$SSHD_CONFIG"
+  grep -q "^UsePAM yes" "$SSHD_CONFIG" || echo "UsePAM yes" >> "$SSHD_CONFIG"
+
   
   if grep -q "^AuthenticationMethods" "$SSHD_CONFIG"; then
     sed -i 's/^AuthenticationMethods.*/AuthenticationMethods keyboard-interactive/' "$SSHD_CONFIG"
