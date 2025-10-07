@@ -77,7 +77,7 @@ fi
 if [ "$cleanup" = true ]; then
   mv cleanup.sh /home/$desired_user/
   chmod +x /home/$desired_user/cleanup.sh
-  chown $desired_user:$desired_user /home/$desired_user/cleanup.shr
+  chown $desired_user:$desired_user /home/$desired_user/cleanup.sh
   rm install.sh
   rm -rf ~/GZLockdown
 fi
