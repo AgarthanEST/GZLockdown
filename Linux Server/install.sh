@@ -48,7 +48,7 @@ done
 
 bonus_features=false
 cleanup=false
-echo "NOTICE: Optional Features are currently DISABLED
+echo "NOTICE: Optional Features are currently DISABLED"
 yes_or_no "Do you want bonus optional security features? (RECOMMENDED, REQUIRES INTERACTION)" && bonus_features=false #true when fixed
 yes_or_no "Do you want script files to be cleaned post run?" && cleanup=true
 echo
