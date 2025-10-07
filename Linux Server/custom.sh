@@ -36,26 +36,14 @@ echo
 yes_or_no "Are you interested in setting up 2FA for SSH?" && enable2fa=true
 if [ "$enable2fa" = true ]; then
 
-#2FA Installation goes here
+  read -p "What do you want your 2FA entry to be called?: " 2fa_label
+  sudo apt install libpam-google-authenticator -y
+  google-authenticator -t -d -r 3 -R 30 -w 1 -C -Q URI -l "$2fa_label"
 
   if sshd -t; then
     systemctl restart ssh
     echo
     echo "2FA Installation Success!"
-    echo
-    echo "BELOW IS YOUR 2FA SECRET CODE TO GENERATE YOUR 2FA CODES"
-    echo "SAVE THIS CODE NOW!"
-    echo
-    echo "*************************"
-    echo "$SECRET"
-    echo "*************************"
-    echo
-    sleep 5
-    read -p "Press Enter to continue..."
-    
-    #echo "Save that code for your 2FA Authenticator"
-    #echo "Otherwise, you will be locked out of this server"
-    
   else
     echo "[ERROR] SSH config test failed! Aborting restart to prevent lockout."
     #exit 1
