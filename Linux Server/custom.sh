@@ -36,16 +36,18 @@ echo
 yes_or_no "Are you interested in setting up 2FA for SSH?" && enable2fa=true
 if [ "$enable2fa" = true ]; then
   OATH_FILE="/etc/security/users.oath"
+  SECRET=$(head -c 20 /dev/urandom | base32 | tr -d '=')
   apt install -y libpam-oath oathtool
   
   mkdir -p "$(dirname "$OATH_FILE")"
   touch "$OATH_FILE"
   chmod 600 "$OATH_FILE"
   chown root:root "$OATH_FILE"
+  echo "HOTP/T30/6 totpuser - $SECRET" > "$OATH_FILE"
 
   PAM_FILE="/etc/pam.d/sshd"
   if ! grep -q "pam_oath.so" "$PAM_FILE"; then
-    echo "auth required pam_oath.so usersfile=$OATH_FILE window=30 digits=6" >> "$PAM_FILE"
+    auth required pam_oath.so usersfile=/etc/security/users.oath window=30 digits=6 user=totpuser
   fi
   
   SSHD_CONFIG="/etc/ssh/sshd_config"
@@ -59,9 +61,34 @@ if [ "$enable2fa" = true ]; then
   fi
   
   if sshd -t; then
-    echo "[*] SSH config test passed, restarting SSH service..."
     systemctl restart ssh
-    echo "[+] SSH 2FA setup complete and SSH restarted safely."
+    echo
+    echo "2FA Installation Success!
+    echo
+    echo "BELOW IS YOUR 2FA SECRET CODE TO GENERATE YOUR 2FA CODES"
+    echo "SAVE THIS CODE NOW!"
+    echo
+    echo "*************************"
+    echo "$SECRET"
+    echo "*************************"
+    echo
+    
+    while true; do
+      read -rp "Continue? (Y/N): " answer
+      case "$answer" in
+        [Yy]) 
+            echo
+            break
+            ;;
+        *)
+            echo
+            echo "Save that code for your 2FA Authenticator"
+            echo "Otherwise, you will be locked out of this server"
+            echo
+            ;;
+      esac
+    done
+    
   else
     echo "[ERROR] SSH config test failed! Aborting restart to prevent lockout."
     #exit 1
