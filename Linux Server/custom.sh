@@ -20,10 +20,12 @@ echo
 
 echo "CONTEXT: An SSH Keypair allows passwordless login via generating a keyfile for authentication" 
 echo "It is harder to brute force than a password"
+echo
 yes_or_no "Are you interested in creating an SSH Keypair?" && echo "TEST SUCCESSS"
 
 echo
 echo "CONTEXT: Ignoring pings mitigates the ping flood DDOS technique"
+echo
 yes_or_no "Do you want your server to ignore pings?" && echo "TEST SUCCESSS"
 
 echo
@@ -49,6 +51,12 @@ if [ "$enable2fa" = true ]; then
   SSHD_CONFIG="/etc/ssh/sshd_config"
   sed -i 's/^#*ChallengeResponseAuthentication.*/ChallengeResponseAuthentication yes/' "$SSHD_CONFIG"
   sed -i 's/^#*UsePAM.*/UsePAM yes/' "$SSHD_CONFIG"
+  
+  if grep -q "^AuthenticationMethods" "$SSHD_CONFIG"; then
+    sed -i 's/^AuthenticationMethods.*/AuthenticationMethods keyboard-interactive/' "$SSHD_CONFIG"
+  else
+    echo "AuthenticationMethods keyboard-interactive" >> "$SSHD_CONFIG"
+  fi
   
   if sshd -t; then
     echo "[*] SSH config test passed, restarting SSH service..."
