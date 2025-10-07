@@ -78,8 +78,6 @@ if [ "$cleanup" = true ]; then
   mv cleanup.sh /home/$desired_user/
   chmod +x /home/$desired_user/cleanup.sh
   chown $desired_user:$desired_user /home/$desired_user/cleanup.sh
-  rm install.sh
-  rm -rf ~/GZLockdown
 fi
 
 ## Setup User
@@ -87,3 +85,9 @@ usermod -aG sudo $desired_user && \
 echo "$desired_user ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$desired_user && \
 mv newuser.sh /home/$desired_user/ && chown $desired_user:$desired_user /home/$desired_user/newuser.sh && \
 su - $desired_user -c "bash ~/newuser.sh"
+
+## Finalise Cleanup
+if [ "$cleanup" = true ]; then
+  rm install.sh
+  rm -rf ~/GZLockdown
+fi
