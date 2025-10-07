@@ -41,8 +41,9 @@ if [ "$enable2fa" = true ]; then
   sudo apt install libpam-google-authenticator -y
   sudo -u "$target_user" google-authenticator -t -d -f -r 3 -R 30 -w 1 -C -l "$2fa_label"
 
-  sudo -u "$target_user" grep -q '^ChallengeResponseAuthentication' /etc/ssh/sshd_config || echo 'ChallengeResponseAuthentication yes' >> /etc/ssh/sshd_config
-  sudo -u "$target_user" grep -q 'pam_google_authenticator.so' /etc/pam.d/sshd || echo 'auth required pam_google_authenticator.so' >> /etc/pam.d/sshd
+  grep -q '^ChallengeResponseAuthentication' /etc/ssh/sshd_config || echo 'ChallengeResponseAuthentication yes' >> /etc/ssh/sshd_config
+  grep -q 'pam_google_authenticator.so' /etc/pam.d/sshd || echo 'auth required pam_google_authenticator.so' >> /etc/pam.d/sshd
+  grep -q '^UsePAM' /etc/ssh/sshd_config || echo 'UsePAM yes' >> /etc/ssh/sshd_config
 
   # Force verification before continue?
 
@@ -56,7 +57,6 @@ if [ "$enable2fa" = true ]; then
   fi
   
 fi
-  
 
 echo
 echo "CONTEXT: Fail2Ban detects malicious attacks and blocks the associated IP"
