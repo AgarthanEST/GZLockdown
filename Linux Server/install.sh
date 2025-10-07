@@ -67,12 +67,6 @@ DEBIAN_FRONTEND=noninteractive dpkg-reconfigure -f noninteractive unattended-upg
 adduser --disabled-password --gecos "" "$desired_user"
 echo "$desired_user:$Password" | chpasswd
 
-#adduser $desired_user
-usermod -aG sudo $desired_user && \
-echo "$desired_user ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$desired_user && \
-mv newuser.sh /home/$desired_user/ && chown $desired_user:$desired_user /home/$desired_user/newuser.sh && \
-su - $desired_user -c "bash ~/newuser.sh"
-
 ## Prepare cleanup.sh & custom.sh
 if [ "$bonus_features" = true ]; then
   mv custom.sh /home/$desired_user/
@@ -87,3 +81,9 @@ if [ "$cleanup" = true ]; then
   rm install.sh
   rm -rf ~/GZLockdown
 fi
+
+## Setup User
+usermod -aG sudo $desired_user && \
+echo "$desired_user ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$desired_user && \
+mv newuser.sh /home/$desired_user/ && chown $desired_user:$desired_user /home/$desired_user/newuser.sh && \
+su - $desired_user -c "bash ~/newuser.sh"
