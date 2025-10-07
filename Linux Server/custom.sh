@@ -37,19 +37,16 @@ yes_or_no "Are you interested in setting up 2FA for SSH?" && enable2fa=true
 if [ "$enable2fa" = true ]; then
   target_user="${SUDO_USER:-$(whoami)}"
 
-  read -p "What do you want your 2FA entry to be called?: " 2fa_label
+  sudo read -p "What do you want your 2FA entry to be called?: " 2fa_label
   sudo apt install libpam-google-authenticator -y
   sudo -u "$target_user" google-authenticator -t -d -f -r 3 -R 30 -w 1 -C -l "$2fa_label"
   
-  grep -q '^ChallengeResponseAuthentication' /etc/ssh/sshd_config || echo 'ChallengeResponseAuthentication yes' | sudo tee -a /etc/ssh/sshd_config > /dev/null
-  grep -q 'pam_google_authenticator.so' /etc/pam.d/sshd || echo 'auth required pam_google_authenticator.so' | sudo tee -a /etc/pam.d/sshd > /dev/null
-
-  # Force verification before continue?
+  sudo bash -c "grep -q '^ChallengeResponseAuthentication' /etc/ssh/sshd_config || echo 'ChallengeResponseAuthentication yes' >> /etc/ssh/sshd_config"
+  sudo bash -c "grep -q '^UsePAM' /etc/ssh/sshd_config || echo 'UsePAM yes' >> /etc/ssh/sshd_config"
+  sudo bash -c "grep -q 'pam_google_authenticator.so' /etc/pam.d/sshd || echo 'auth required pam_google_authenticator.so' >> /etc/pam.d/sshd"
 
   if sshd -t; then
     systemctl restart ssh
-    echo
-    echo "2FA Installation Success!"
   else
     echo "[ERROR] SSH config test failed! Aborting restart to prevent lockout."
     #exit 1
