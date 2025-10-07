@@ -36,18 +36,20 @@ echo
 yes_or_no "Are you interested in setting up 2FA for SSH?" && enable2fa=true
 if [ "$enable2fa" = true ]; then
 
+  target_user="${SUDO_USER:-$(whoami)}"
+  echo "$target_user"
+
   read -p "What do you want your 2FA entry to be called?: " 2fa_label
   sudo apt install libpam-google-authenticator -y
-  google-authenticator -t -d -r 3 -R 30 -w 1 -C -l "$2fa_label"
+  sudo -u "$target_user" google-authenticator -t -d -f -r 3 -R 30 -w 1 -C -l "$2fa_label"
 
-  secret=$(head -n 1 ~/.google_authenticator)
-  label="$2fa_label"
-  issuer="$2fa_label"
+  #secret=$(head -n 1 ~/.google_authenticator)
+  #label="$2fa_label"
+  #issuer="$2fa_label"
 
-  uri="otpauth://totp/${label}?secret=${secret}&issuer=${issuer}"
-  echo "$uri"
+  #uri="otpauth://totp/${label}?secret=${secret}&issuer=${issuer}"
+  #echo "$uri"
 
-  # Install Qrencode for scanning?
   # Force verification before continue?
 
   if sshd -t; then
