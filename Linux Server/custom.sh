@@ -12,11 +12,13 @@ function yes_or_no {
 }
 
 ## Customisations
-
 clear
+echo "CUSTOMISATIONS"
+echo
+
 echo "CONTEXT: An SSH Keypair allows passwordless login via generating a keyfile for authentication" 
 echo "It is harder to brute force than a password"
 yes_or_no "Are you interested in creating an SSH Keypair?" && echo "TEST SUCCESSS"
 
 echo
-echo "MORE OPTIONS IN HERE"
+#GET MORE OPTIONS IN HERE
