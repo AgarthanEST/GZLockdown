@@ -61,7 +61,7 @@ apt-get upgrade -y
 apt-get install -y unattended-upgrades
 
 cat > /etc/apt/apt.conf.d/20auto-upgrades <<'EOF'
-APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Update-Package-Lists "1";  ## 1 day
 APT::Periodic::Download-Upgradeable-Packages "1";
 APT::Periodic::Unattended-Upgrade "1";
 APT::Periodic::AutocleanInterval "7";
