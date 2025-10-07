@@ -35,33 +35,9 @@ enable2fa=false
 echo
 yes_or_no "Are you interested in setting up 2FA for SSH?" && enable2fa=true
 if [ "$enable2fa" = true ]; then
-  OATH_FILE="/etc/security/users.oath"
-  SECRET=$(head -c 20 /dev/urandom | base32 | tr -d '=')
-  apt install -y libpam-oath oathtool
-  
-  mkdir -p "$(dirname "$OATH_FILE")"
-  touch "$OATH_FILE"
-  chmod 600 "$OATH_FILE"
-  chown root:root "$OATH_FILE"
-  echo "HOTP/T30/6 totpuser - $SECRET" > "$OATH_FILE"
 
-  PAM_FILE="/etc/pam.d/sshd"
-  if ! grep -q "pam_oath.so" "$PAM_FILE"; then
-    echo "auth required pam_oath.so usersfile=$OATH_FILE window=30 digits=6 user=totpuser" >> "$PAM_FILE"
-  fi
-  
-  SSHD_CONFIG="/etc/ssh/sshd_config"
-  grep -q "^ChallengeResponseAuthentication yes" "$SSHD_CONFIG" || echo "ChallengeResponseAuthentication yes" >> "$SSHD_CONFIG"
-  grep -q "^UsePAM yes" "$SSHD_CONFIG" || echo "UsePAM yes" >> "$SSHD_CONFIG"
-  grep -q "^PasswordAuthentication yes" "$SSHD_CONFIG" || echo "PasswordAuthentication yes" >> "$SSHD_CONFIG"
-  
-  if grep -q "^AuthenticationMethods" "$SSHD_CONFIG"; then
-    sed -i 's/^AuthenticationMethods.*/AuthenticationMethods password,keyboard-interactive/' "$SSHD_CONFIG"
-  else
-    echo "AuthenticationMethods password,keyboard-interactive" >> "$SSHD_CONFIG"
-  fi
+#2FA Installation goes here
 
-  
   if sshd -t; then
     systemctl restart ssh
     echo
