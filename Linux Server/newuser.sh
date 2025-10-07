@@ -6,7 +6,6 @@ mkdir ~/.ssh
 chmod 700 ~/.ssh
 
 ## Customisation
-clear
 read -p "Select Custom SSH Port: " desired_port
 
 sudo sed -i "s/PermitRootLogin yes\b/PermitRootLogin no/gI" /etc/ssh/sshd_config # Block Root Login
@@ -36,6 +35,7 @@ echo "ssh $USER@$myIP -p $desired_port"
 echo "----------------------------"
 echo
 echo "Enter: reboot now"
+echo
 
 # NOTE: DDOS Protection will be needed. Look for tools. Protect externally with cloudflare. Get SSL cert etc.
 # NOTE: This can be integrated into Auto Matrix setup. WIth custom site name, gets the SSL cert for you. ALL AUTOMATED.
