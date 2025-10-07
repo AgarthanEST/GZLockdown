@@ -76,11 +76,13 @@ su - $desired_user -c "bash ~/newuser.sh"
 ## Prepare cleanup.sh & custom.sh
 if [ "$bonus_features" = true ]; then
   mv custom.sh /home/$desired_user/
+  chmod +x /home/$desired_user/custom.sh
   chown $desired_user:$desired_user /home/$desired_user/custom.sh
 fi
 
 if [ "$cleanup" = true ]; then
   mv cleanup.sh /home/$desired_user/
+  chmod +x /home/$desired_user/cleanup.sh
   chown $desired_user:$desired_user /home/$desired_user/cleanup.shr
   rm install.sh
   rm -rf ~/GZLockdown
