@@ -63,7 +63,7 @@ if [ "$enable2fa" = true ]; then
   if sshd -t; then
     systemctl restart ssh
     echo
-    echo "2FA Installation Success!
+    echo "2FA Installation Success!"
     echo
     echo "BELOW IS YOUR 2FA SECRET CODE TO GENERATE YOUR 2FA CODES"
     echo "SAVE THIS CODE NOW!"
