@@ -70,16 +70,17 @@ echo "$desired_user:$Password" | chpasswd
 #adduser $desired_user
 usermod -aG sudo $desired_user && \
 echo "$desired_user ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$desired_user && \
-cp newuser.sh /home/$desired_user/ && chown $desired_user:$desired_user /home/$desired_user/newuser.sh && \
+mv newuser.sh /home/$desired_user/ && chown $desired_user:$desired_user /home/$desired_user/newuser.sh && \
 su - $desired_user -c "bash ~/newuser.sh"
 
 ## Prepare cleanup.sh & custom.sh
 if [ "$bonus_features" = true ]; then
-  cp custom.sh /home/$desired_user/
+  mv custom.sh /home/$desired_user/
   chown $desired_user:$desired_user /home/$desired_user/custom.sh
 fi
 
 if [ "$cleanup" = true ]; then
-  cp cleanup.sh /home/$desired_user/
-  chown $desired_user:$desired_user /home/$desired_user/cleanup.sh
+  mv cleanup.sh /home/$desired_user/
+  chown $desired_user:$desired_user /home/$desired_user/cleanup.shr
+  rm install.sh
 fi
