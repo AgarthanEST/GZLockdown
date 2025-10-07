@@ -56,10 +56,11 @@ if [ "$enable2fa" = true ]; then
 
   
   if grep -q "^AuthenticationMethods" "$SSHD_CONFIG"; then
-    sed -i 's/^AuthenticationMethods.*/AuthenticationMethods keyboard-interactive/' "$SSHD_CONFIG"
+    sed -i 's/^AuthenticationMethods.*/AuthenticationMethods password,keyboard-interactive/' "$SSHD_CONFIG"
   else
-    echo "AuthenticationMethods keyboard-interactive" >> "$SSHD_CONFIG"
+    echo "AuthenticationMethods password,keyboard-interactive" >> "$SSHD_CONFIG"
   fi
+
   
   if sshd -t; then
     systemctl restart ssh
