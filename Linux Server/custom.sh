@@ -29,8 +29,38 @@ yes_or_no "Do you want your server to ignore pings?" && echo "TEST SUCCESSS"
 echo
 yes_or_no "Do you want to geoblock IPs typically associated with spam?" && echo "TEST SUCCESSS"
 
+enable2fa=false
 echo
-yes_or_no "Are you interested in setting up 2FA for SSH?" && echo "TEST SUCCESSS"
+yes_or_no "Are you interested in setting up 2FA for SSH?" && enable2fa=true
+if [ "$enable2fa" = true ]; then
+  OATH_FILE="/etc/security/users.oath"
+  apt install -y libpam-oath oathtool
+  
+  mkdir -p "$(dirname "$OATH_FILE")"
+  touch "$OATH_FILE"
+  chmod 600 "$OATH_FILE"
+  chown root:root "$OATH_FILE"
+
+  PAM_FILE="/etc/pam.d/sshd"
+  if ! grep -q "pam_oath.so" "$PAM_FILE"; then
+    echo "auth required pam_oath.so usersfile=$OATH_FILE window=30 digits=6" >> "$PAM_FILE"
+  fi
+  
+  SSHD_CONFIG="/etc/ssh/sshd_config"
+  sed -i 's/^#*ChallengeResponseAuthentication.*/ChallengeResponseAuthentication yes/' "$SSHD_CONFIG"
+  sed -i 's/^#*UsePAM.*/UsePAM yes/' "$SSHD_CONFIG"
+  
+  if sshd -t; then
+    echo "[*] SSH config test passed, restarting SSH service..."
+    systemctl restart ssh
+    echo "[+] SSH 2FA setup complete and SSH restarted safely."
+  else
+    echo "[ERROR] SSH config test failed! Aborting restart to prevent lockout."
+    #exit 1
+  fi
+  
+fi
+  
 
 echo
 echo "CONTEXT: Fail2Ban detects malicious attacks and blocks the associated IP"
