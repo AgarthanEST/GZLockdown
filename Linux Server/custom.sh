@@ -53,7 +53,7 @@ if [ "$enable2fa" = true ]; then
   SSHD_CONFIG="/etc/ssh/sshd_config"
   grep -q "^ChallengeResponseAuthentication yes" "$SSHD_CONFIG" || echo "ChallengeResponseAuthentication yes" >> "$SSHD_CONFIG"
   grep -q "^UsePAM yes" "$SSHD_CONFIG" || echo "UsePAM yes" >> "$SSHD_CONFIG"
-
+  grep -q "^PasswordAuthentication yes" "$SSHD_CONFIG" || echo "PasswordAuthentication yes" >> "$SSHD_CONFIG"
   
   if grep -q "^AuthenticationMethods" "$SSHD_CONFIG"; then
     sed -i 's/^AuthenticationMethods.*/AuthenticationMethods password,keyboard-interactive/' "$SSHD_CONFIG"
