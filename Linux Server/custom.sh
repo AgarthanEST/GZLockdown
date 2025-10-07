@@ -23,4 +23,18 @@ echo "It is harder to brute force than a password"
 yes_or_no "Are you interested in creating an SSH Keypair?" && echo "TEST SUCCESSS"
 
 echo
+echo "CONTEXT: Ignoring pings mitigates the ping flood DDOS technique"
+yes_or_no "Do you want your server to ignore pings?" && echo "TEST SUCCESSS"
+
+echo
+yes_or_no "Do you want to geoblock IPs typically associated with spam?" && echo "TEST SUCCESSS"
+
+echo
+yes_or_no "Are you interested in setting up 2FA for SSH?" && echo "TEST SUCCESSS"
+
+echo
+echo "CONTEXT: Fail2Ban detects malicious attacks and blocks the associated IP"
+yes_or_no "Do you want to install Fail2Ban?" && echo "TEST SUCCESSS"
+
+echo
 #GET MORE OPTIONS IN HERE
