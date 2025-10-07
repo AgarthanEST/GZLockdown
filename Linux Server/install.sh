@@ -83,4 +83,5 @@ if [ "$cleanup" = true ]; then
   mv cleanup.sh /home/$desired_user/
   chown $desired_user:$desired_user /home/$desired_user/cleanup.shr
   rm install.sh
+  rm -rf ~/GZLockdown
 fi
