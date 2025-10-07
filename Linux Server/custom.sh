@@ -45,6 +45,8 @@ if [ "$enable2fa" = true ]; then
   sudo bash -c "grep -q '^UsePAM' /etc/ssh/sshd_config || echo 'UsePAM yes' >> /etc/ssh/sshd_config"
   sudo bash -c "grep -q 'pam_google_authenticator.so' /etc/pam.d/sshd || sed -i '1i auth required pam_google_authenticator.so' /etc/pam.d/sshd"
 
+  #STILL PERMISSION DENIED AFTER ALL TEXT IS INSERTED. Ensure nothing conflicts. Fix later
+
   if sshd -t; then
     systemctl restart ssh
   else
