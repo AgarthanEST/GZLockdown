@@ -17,7 +17,7 @@ mkdir ~/.ssh
 chmod 700 ~/.ssh
 
 ## Customisation
-echo "***********************"
+clear
 read -p "Select Custom SSH Port: " desired_port
 
 sudo sed -i "s/PermitRootLogin yes\b/PermitRootLogin no/gI" /etc/ssh/sshd_config # Block Root Login
@@ -29,9 +29,11 @@ sudo systemctl restart ssh
 sudo ufw --force enable
 sudo ufw status
 
-## Optional Features
+## Scan Optional Scripts
+[ -f "./custom.sh" ] && ./custom.sh
+[ -f "./cleanup.sh" ] && ./cleanup.sh
 
-echo
+clear
 echo "CONTEXT: An SSH Keypair allows passwordless login via generating a keyfile for authentication" 
 echo "It is harder to brute force than a password"
 yes_or_no "Are you interested in creating an SSH Keypair?" && echo "TEST SUCCESSS"
