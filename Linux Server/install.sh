@@ -4,9 +4,19 @@
 # Minimise attack surface with minimal software installs. Limit permissions
 # Do a Y/N on if this is a fresh server on root?
 
+## Functions
+function yes_or_no {
+    while true; do
+        read -p "$* [y/n]: " yn
+        case $yn in
+            [Yy]*) return 0  ;;  
+            [Nn]*) return  1 ;;
+        esac
+    done
+}
+
 ## Customisation Variables
 clear
-
 while true; do
   read -p "New Username: " desired_user
   if [[ -n "$desired_user" ]]; then
@@ -29,6 +39,11 @@ while true; do
     echo "Passwords do not match. Please try again."
   fi
 done
+
+bonus_features=false
+cleanup=false
+yes_or_no "Do you want bonus optional security features? (REQUIRES INTERACTION)" && bonus_features=true
+yes_or_no "Do you want script files to be cleaned post run?" && cleanup=true
 
 ## Unattended Security Updates
 set -e
@@ -58,6 +73,13 @@ echo "$desired_user ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$desired_
 cp newuser.sh /home/$desired_user/ && chown $desired_user:$desired_user /home/$desired_user/newuser.sh && \
 su - $desired_user -c "bash ~/newuser.sh"
 
-## Prepare cleanup.sh
-cp cleanup.sh /home/$desired_user/
-chown $desired_user:$desired_user /home/$desired_user/cleanup.sh
+## Prepare cleanup.sh & custom.sh
+if [ "$bonus_features" = true ]; then
+  cp custom.sh /home/$desired_user/
+  chown $desired_user:$desired_user /home/$desired_user/custom.sh
+fi
+
+if [ "$cleanup" = true ]; then
+  cp cleanup.sh /home/$desired_user/
+  chown $desired_user:$desired_user /home/$desired_user/cleanup.sh
+fi
