@@ -17,6 +17,11 @@ function yes_or_no {
 
 ## Customisation Variables
 clear
+echo "*************************"
+echo "AUTO SERVER HARDENING"
+echo "*************************"
+echo
+
 while true; do
   read -p "New Username: " desired_user
   if [[ -n "$desired_user" ]]; then
@@ -34,6 +39,7 @@ while true; do
   echo
   if [ "$Password" == "$Password2" ]; then
     echo "Passwords match."
+    echo
     break
   else
     echo "Passwords do not match. Please try again."
@@ -44,6 +50,7 @@ bonus_features=false
 cleanup=false
 yes_or_no "Do you want bonus optional security features? (REQUIRES INTERACTION)" && bonus_features=true
 yes_or_no "Do you want script files to be cleaned post run?" && cleanup=true
+echo
 
 ## Unattended Security Updates
 set -e
