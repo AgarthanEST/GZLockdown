@@ -72,22 +72,11 @@ if [ "$enable2fa" = true ]; then
     echo "$SECRET"
     echo "*************************"
     echo
+    sleep 5
+    read -p "Press Enter to continue..."
     
-    while true; do
-      read -rp "Continue? (Y/N): " answer
-      case "$answer" in
-        [Yy]) 
-            echo
-            break
-            ;;
-        *)
-            echo
-            echo "Save that code for your 2FA Authenticator"
-            echo "Otherwise, you will be locked out of this server"
-            echo
-            ;;
-      esac
-    done
+    #echo "Save that code for your 2FA Authenticator"
+    #echo "Otherwise, you will be locked out of this server"
     
   else
     echo "[ERROR] SSH config test failed! Aborting restart to prevent lockout."
