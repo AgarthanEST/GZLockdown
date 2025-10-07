@@ -6,7 +6,9 @@ mkdir ~/.ssh
 chmod 700 ~/.ssh
 
 ## Customisation
+echo
 read -p "Select Custom SSH Port: " desired_port
+# Try and move this to the very start?
 
 sudo sed -i "s/PermitRootLogin yes\b/PermitRootLogin no/gI" /etc/ssh/sshd_config # Block Root Login
 sudo sed -i "s/#Port 22\b/Port $desired_port/gI" /etc/ssh/sshd_config # Unique SSH Port
@@ -18,7 +20,7 @@ sudo ufw --force enable
 sudo ufw status
 
 ## Scan Optional Scripts
-[ -f "./custom.sh" ] && ./custom.sh
+[ -f "./custom.sh" ] && sudo ./custom.sh
 [ -f "./cleanup.sh" ] && ./cleanup.sh
 
 # NOTE: Install other tools optionally here.
