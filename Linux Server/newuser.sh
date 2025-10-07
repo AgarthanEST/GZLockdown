@@ -37,6 +37,7 @@ echo "ssh $USER@$myIP -p $desired_port"
 echo "----------------------------"
 echo
 echo "Rebooting in 10 seconds..."
+sudo reboot now
 
 # NOTE: DDOS Protection will be needed. Look for tools. Protect externally with cloudflare. Get SSL cert etc.
 # NOTE: This can be integrated into Auto Matrix setup. WIth custom site name, gets the SSL cert for you. ALL AUTOMATED.
